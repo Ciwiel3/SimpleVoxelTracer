@@ -94,7 +94,7 @@ static void updateCamera(float dTimeS)
 {
     GLFWwindow* window = glfwGetCurrentContext();
 
-    float speed = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 50 : 20;
+    float speed = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 500 : 20;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
@@ -106,7 +106,7 @@ static void updateCamera(float dTimeS)
         camPos = add(camPos, mul(forward, -dTimeS * speed));
     }
 
-    vec3 right = cross(forward, ((vec3) {0, 1, 0}));
+    vec3 right = normalize(cross(forward, ((vec3) {0, 1, 0})));
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
