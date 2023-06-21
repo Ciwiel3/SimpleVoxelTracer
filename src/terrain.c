@@ -190,17 +190,16 @@ static void generate(Terrain* terrain)
     noiseGen2D.seed = 41233125;
     noiseGen2D.frequency = 1;
 
-    u16* heightmap = malloc(terrain->width * terrain->width * sizeof(*heightmap));
-
-    for (u32 x = 0; x < terrain->width; x++)
-        for (u32 z = 0; z < terrain->width; z++)
-        {
-            heightmap[x * terrain->width + z] = 0.1 * terrain->height + 0.25 * terrain->height * (fnlGetNoise2D(&noiseGen2D, x * 0.005, z * 0.005) * 0.5 + 0.5);
-        }
-
     for (u32 cx = 0; cx < terrain->width / 8; cx++)
         for (u32 cz = 0; cz < terrain->width / 8; cz++)
         {
+            u16 heightMap[8][8];
+            for (u32 x = 0; x < 8; x++)
+                for (u32 z = 0; z < 8; z++)
+                {
+                    heightMap[x][z] = 0.1 * terrain->height + 0.25 * terrain->height * (fnlGetNoise2D(&noiseGen2D, (cx*8 + x) * 0.005, (cz*8 + z) * 0.005) * 0.5 + 0.5);
+                }
+
             for (u32 cy = 0; cy < terrain->height / 8; cy++)
             {
                 u32 chunkIdx = getChunkIdx(cx * 8, cy * 8, cz * 8, terrain->width, terrain->height);
@@ -214,7 +213,7 @@ static void generate(Terrain* terrain)
                     {
                         u32 x = cx * 8 + dx;
                         u32 z = cz * 8 + dz;
-                        int height = min(8, heightmap[x * terrain->width + z] - cy * 8);
+                        int height = min(8, heightMap[dx][dz] - cy * 8);
 
                         for (int dy = 0; dy < height; dy++)
                         {
@@ -242,11 +241,11 @@ static void generate(Terrain* terrain)
 
                             u32 blockIdx = getWithinChunkIdx(x, y, z);
 
-                            u8 color = packColor(92,73,73);
-                            if (y > 0.15 * terrain->height)
+                            u8 color = packColor(135, 135, 135);
+                            if (y <= 0.25 * terrain->height && y >= heightMap[dx][dz] - 3)
                                 color = packColor(86, 125, 70);
-                            if (y > 0.25 * terrain->height)
-                                color = packColor(135, 135, 135);
+                            if (y <= 0.15 * terrain->height && y >= heightMap[dx][dz] - 3)
+                                color = packColor(92,73,73);
 
                             blockData[blockIdx] = color;
                             setBit(&bitmask[blockIdx / 32], blockIdx % 32, 1);
@@ -266,6 +265,4 @@ static void generate(Terrain* terrain)
                 }
             }
         }
-
-    free(heightmap);
 }

@@ -2241,13 +2241,20 @@ FORCE_INLINE static vec4 slerp(vec4 q1, vec4 q2, float t)
     return add(mul(q1, af), mul(q2, bf));
 }
 
-FORCE_INLINE static u32 log2ui(u32 x) {
-  u32 y;
-  asm ( "\tbsr %1, %0\n"
-      : "=r"(y)
-      : "r" (x)
-  );
-  return y;
+//FORCE_INLINE static u32 log2ui(u32 x) {
+//  u32 y;
+//  asm ( "\tbsr %1, %0\n"
+//      : "=r"(y)
+//      : "r" (x)
+//  );
+//  return y;
+//}
+
+FORCE_INLINE static u32 log2ui(u32 x)
+{
+    int r = 0;
+    while (x >>= 1) ++r;
+    return r;
 }
 
 

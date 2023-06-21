@@ -13,15 +13,21 @@ static void updateCamera(float dTimeS);
 static vec3 camPos;
 static vec3 forward;
 
-int main(void)
+int main(int argc, char* argv[])
 {
     graphics_init();
 
     Terrain terrain;
 
+    u32 width = 8192;
+    if (argc > 1)
+    {
+        width = atoi(argv[1]);
+    }
+
     // generate terrain
     u32 start = clock();
-    terrain_init(&terrain, 1024, 256);
+    terrain_init(&terrain, width, 256);
     u32 stop = clock();
 
     // calc memory footprint
@@ -66,8 +72,8 @@ int main(void)
     terrain_destroy(&terrain);
     graphics_destroy();
 
-    LOG_INFO("Press any Enter to exit.")
-    getchar();
+//    LOG_INFO("Press any Enter to exit.")
+//    getchar();
 
     return 0;
 }
