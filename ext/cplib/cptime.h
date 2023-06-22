@@ -4,7 +4,9 @@
 #define CPTIME_H
 
 #ifdef __linux__
+#ifndef CLOCK_MONOTONIC
 #define CLOCK_MONOTONIC 1
+#endif
 #endif
 
 #include <stdint.h>
