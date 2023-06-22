@@ -3,6 +3,10 @@
 #ifndef CPTIME_H
 #define CPTIME_H
 
+#ifdef __linux__
+#define CLOCK_MONOTONIC 1
+#endif
+
 #include <stdint.h>
 #include <time.h>
 
