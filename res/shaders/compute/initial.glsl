@@ -1,5 +1,5 @@
 #version 460
-#extension GL_ARB_shader_clock : enable
+//#extension GL_ARB_shader_clock : enable
 layout(local_size_x = 8,  local_size_y = 8) in;
 
 layout(rgba8, binding = 0) uniform writeonly image2D outImage;
@@ -283,11 +283,13 @@ void main()
     vec3 colorTime = vec3(0);
     if (intersect >= 0)
     {
-        uvec2 start = clock2x32ARB();
+//        uvec2 start = clock2x32ARB();
+
         hit = intersectTerrain(rayPos, rayDir);
-        uvec2 end = clock2x32ARB();
-        uint time = end.x - start.x;
-        colorTime = vec3(time, 0, 0) / 1000000.0f;
+
+//        uvec2 end = clock2x32ARB();
+//        uint time = end.x - start.x;
+//        colorTime = vec3(time, 0, 0) / 1000000.0f;
     }
 
     // choose color (sky or voxel color)

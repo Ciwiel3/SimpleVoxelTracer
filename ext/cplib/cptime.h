@@ -3,12 +3,12 @@
 #ifndef CPTIME_H
 #define CPTIME_H
 
+#include <stdint.h>
+#include <time.h>
+
 #ifndef CLOCK_MONOTONIC
 #define CLOCK_MONOTONIC 1
 #endif
-
-#include <stdint.h>
-#include <time.h>
 
 static uint64_t nclock(void)
 {
