@@ -177,8 +177,9 @@ RayHit intersectTerrain(vec3 rayPos, vec3 rayDir)
         else
         {
             // the chunk is empty --> read the distance field value and convert it to euclidean
-            float dfValue1 = (((chunkVal & 0x7FFFu) - 1) << 3) * distanceFactor;
-            float dfValue2 = ((((chunkVal >> 15) & 0x7FFFu) - 1) << 3) * distanceFactor;
+            // subtracting by 16 after multiplying by 8, effectively subtracts by 2 in a way that doesn't cause uint overflows
+            float dfValue1 = (float((chunkVal & 0x7FFFu) << 3) - 16) * distanceFactor;
+            float dfValue2 = (float((((chunkVal >> 15) & 0x7FFFu)) << 3) - 16) * distanceFactor;
 
             float dfValue = dfValue2;
             if (rayDir.y < 0)
@@ -188,7 +189,7 @@ RayHit intersectTerrain(vec3 rayPos, vec3 rayDir)
             }
 
             // if the DF value is at least 1, jump by that amount
-            if (dfValue > 0)
+            if (dfValue >= 1)
             {
                 rayPos = gridCoords + withinGridCoords + rayDir * dfValue;
                 gridCoords = ivec3(rayPos);
