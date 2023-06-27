@@ -25,11 +25,6 @@ layout(std430, binding = 2) readonly buffer chunk_pool_bits
     uint chunkPoolBits[];
 };
 
-layout(std430, binding = 3) buffer photon_map
-{
-    uint photonMap[];
-};
-
 struct RayHit {
     vec3 hitPos;
     uint hitId;
